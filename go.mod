@@ -6,7 +6,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/microsoft/go-mssqldb v0.21.0
-	github.com/nullseed/logruseq v0.0.0-20191022112445-275e5c09bb04
+	github.com/redis/go-redis/v9 v9.0.5
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.6.1
 	google.golang.org/grpc v1.55.0
@@ -15,6 +15,8 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect

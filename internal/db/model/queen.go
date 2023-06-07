@@ -37,20 +37,20 @@ type Queen struct {
 }
 
 type QueenTrait struct {
-	Generation        uint16         `db:"BeeGeneration"`
-	Universe          uint16         `db:"UniverseId"`
-	LandformSpecialty uint16         `db:"Specialty1"`
-	Like              uint16         `db:"Like"`
-	Dislike           uint16         `db:"Dislike"`
-	Mood              uint16         `db:"Mood"`
-	Level             uint16         `db:"Level"`
-	LevelCap          uint16         `db:"LevelCap"`
-	MateCap           uint16         `db:"MateCap"`
-	MateCount         uint16         `db:"MateCount"`
-	NormalAttack1     uint16         `db:"AttackProfile1"`
-	NormalAttack2     uint16         `db:"AttackProfile2"`
-	SpecialAttack     uint16         `db:"AttackProfile3"`
-	QueenBody         uint16         `db:"QueenBody"`
-	QueenType         uint16         `db:"QueenType"`
-	Background        sql.NullString `db:"Background"`
+	Generation        uint16 `db:"BeeGeneration"`
+	Universe          uint16 `db:"UniverseId"`
+	LandformSpecialty uint16 `db:"Specialty1"`
+	Like              uint16 `db:"Like"`
+	Dislike           uint16 `db:"Dislike"`
+	Mood              uint16 `db:"Mood"`
+	Level             uint16 `db:"Level"`
+	LevelCap          uint16 `db:"LevelCap"`
+	MateCap           uint16 `db:"MateCap"`
+	MateCount         uint16 `db:"MateCount"`
+	NormalAttack1     uint16 `db:"AttackProfile1"`
+	NormalAttack2     uint16 `db:"AttackProfile2"`
+	SpecialAttack     uint16 `db:"AttackProfile3"`
+	QueenBody         uint16 `db:"QueenBody"`
+	QueenType         uint16 `db:"QueenType"`
+	Background        string `db:"Background"`
 }
