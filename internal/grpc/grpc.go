@@ -17,16 +17,19 @@ type Grpc struct {
 
 type HoneylandNotifyServiceServer struct {
 	notifier.UnimplementedNotifyServiceServer
-	beeTChannel chan model.BeeTrait
-	beeTRMap    *trait.BeeTraitsRarityMap
+	beeTChannel      chan model.BeeTrait
+	beeTRMap         *trait.BeeTraitsRarityMap
+	updateBeeChannel chan model.UpdateBeeGrpc
 }
 
-func NewGrpcServer(btm trait.BeeTraitsRarityMap) *Grpc {
+func NewGrpcServer(btm *trait.BeeTraitsRarityMap) *Grpc {
 	btc := make(chan model.BeeTrait, 100)
+	ubc := make(chan model.UpdateBeeGrpc, 100)
 	return &Grpc{
 		Server: &HoneylandNotifyServiceServer{
-			beeTChannel: btc,
-			beeTRMap:    &btm,
+			beeTChannel:      btc,
+			beeTRMap:         btm,
+			updateBeeChannel: ubc,
 		},
 	}
 }

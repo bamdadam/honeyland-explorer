@@ -2,40 +2,36 @@ package grpc
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"time"
 
 	"github.com/bamdadam/honeyland-explorer/internal/db/model"
 	"github.com/bamdadam/honeyland-explorer/internal/notifier"
 	"github.com/sirupsen/logrus"
 )
 
-func (g *Grpc) SetBeeReadMapScheduler(ctx context.Context, d time.Duration) {
-	ticker := time.NewTicker(d)
-	go func() {
-		for range ticker.C {
-			bpm, err := g.Server.beeTRMap.Convert(ctx)
-			if err != nil {
-				logrus.Error("Error while converting Bee write map to Bee percentage map: ", err.Error())
-			} else {
-				g.Server.beeTRMap.SetReadMap(ctx, bpm)
-				fmt.Println("Task executed!")
-				jsonrm, err := json.Marshal(g.Server.beeTRMap.TR.BeeReadRarity)
-				if err != nil {
-					logrus.Error("Can't conver rarity map to json: ", err.Error())
-				} else {
-					fmt.Println(string(jsonrm))
-				}
-			}
-		}
-	}()
-}
+// func (g *Grpc) SetBeeReadMapScheduler(ctx context.Context, d time.Duration) {
+// 	ticker := time.NewTicker(d)
+// 	go func() {
+// 		for range ticker.C {
+// 			bpm, err := g.Server.beeTRMap.Convert(ctx)
+// 			if err != nil {
+// 				logrus.Error("Error while converting Bee write map to Bee percentage map: ", err.Error())
+// 			} else {
+// 				g.Server.beeTRMap.SetReadMap(ctx, bpm)
+// 				fmt.Println("Task executed!")
+// 				jsonrm, err := json.Marshal(g.Server.beeTRMap.BeeReadRarity)
+// 				if err != nil {
+// 					logrus.Error("Can't conver rarity map to json: ", err.Error())
+// 				} else {
+// 					fmt.Println(string(jsonrm))
+// 				}
+// 			}
+// 		}
+// 	}()
+// }
 
-func (s *Grpc) NotifyBee(ctx context.Context, req *notifier.BeeNotifierRequest) (*notifier.BeeNotifierResponse, error) {
-	bt := model.BeeTrait{}
+func (s *Grpc) NotifyBee(ctx context.Context, req *notifier.BeeNotifierRequest) (*notifier.MessageResponse, error) {
 	if req != nil {
-		bt = model.BeeTrait{
+		bt := model.BeeTrait{
 			Generation:         uint16(req.GetGeneration()),
 			Universe:           uint16(req.GetUniverse()),
 			LandformSpecialty:  uint16(req.GetLandformSpecialty()),
@@ -64,15 +60,35 @@ func (s *Grpc) NotifyBee(ctx context.Context, req *notifier.BeeNotifierRequest) 
 			Background:         uint16(req.GetBackground()),
 		}
 		s.Server.beeTChannel <- bt
-		return &notifier.BeeNotifierResponse{
+		return &notifier.MessageResponse{
 			Success: true,
 			Message: "",
 		}, nil
 	}
-	return &notifier.BeeNotifierResponse{
+	return &notifier.MessageResponse{
 		Success: false,
 		Message: "Request is null",
 	}, nil
+}
+
+func (s *Grpc) UpdateBeeStats(ctx context.Context, req *notifier.UpdateBeeRequest) (*notifier.MessageResponse, error) {
+	if req != nil {
+		bg := model.UpdateBeeGrpc{
+			StatDifference: req.GetStatDifference(),
+			Generation:     uint16(req.GetGeneration()),
+			Id:             req.GetNftNumber(),
+		}
+		s.Server.updateBeeChannel <- bg
+		return &notifier.MessageResponse{
+			Success: true,
+			Message: "",
+		}, nil
+	} else {
+		return &notifier.MessageResponse{
+			Success: false,
+			Message: "Request is null",
+		}, nil
+	}
 }
 
 func (s *Grpc) UpdateBeeWriteMap(ctx context.Context) {

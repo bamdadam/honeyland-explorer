@@ -92,3 +92,9 @@ type BeeRankingTrait struct {
 	Recovery          uint16 `db:"Recovery"`
 	Endurance         uint16 `db:"Endurance"`
 }
+
+type UpdateBeeGrpc struct {
+	StatDifference int32
+	Generation     uint16
+	Id             uint32
+}
