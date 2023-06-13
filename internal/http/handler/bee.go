@@ -175,9 +175,9 @@ func (b *Bee) FillResponseWithTrait(ctx context.Context, m model.Bee, isGenesis 
 		BodyVisualTrait:    m.BodyVisualTrait,
 		Background:         m.Background,
 	}
-	pre := "Generation-"
+	pre := "Generation-Bee-"
 	if isGenesis {
-		pre = "Genesis-"
+		pre = "Genesis-Bee-"
 	}
 	nftNum, err := b.RDB.HGetUint(ctx, pre+b.Btm.NFTNumFieldName, "0")
 	if err != nil {

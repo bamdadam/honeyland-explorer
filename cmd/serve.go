@@ -33,7 +33,7 @@ func main() {
 			AppName: "Honeyland explorer",
 		},
 	)
-	connString := ("")
+	connString := ("Data Source=Honeyreplica.database.windows.net;Initial Catalog=Honeyverse;user id=onlyRead; password=readOn1y;Connection Timeout=30")
 
 	db, err := sqlx.Open("sqlserver", connString)
 	if err != nil {
@@ -55,13 +55,15 @@ func main() {
 	}
 	err = btm.InitGenesis(ctx)
 	if err != nil {
-		log.Fatal("Error while getting bee rarity map: ", err.Error())
+		log.Fatal("Error while getting genesis bee rarity map: ", err.Error())
 	}
-	btm.SetGenesisBeeSets(ctx)
+	err = btm.InitGeneration(ctx)
+	if err != nil {
+		log.Fatal("Error while getting generation bee rarity map: ", err.Error())
+	}
+	go btm.SetBeeSetsScheduler(ctx, 5*time.Minute)
 	grpcService := grpc.NewGrpcServer(&btm)
 	go grpcService.Init(ctx)
-	// grpcService.SetBeeReadMapScheduler(ctx, 5*time.Minute)
-	go btm.SetGenesisBeeSetsScheduler(ctx, 5*time.Minute)
 	bh := handler.Bee{
 		DB:  db,
 		Btm: &btm,
